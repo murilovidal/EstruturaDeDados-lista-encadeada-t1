@@ -182,10 +182,10 @@ void Multiplica(MatrizEsparsa *p1, MatrizEsparsa *p2, int linha1, int coluna1, i
   }
   else
   {
-    for(i=0; i<linha2; i++)//coluna1 == linha2
-      for(j=0; j<coluna1; j++)
+    for(i=0; i<linha1; i++)//coluna1 == linha2
+      for(j=0; j<coluna2; j++)
       {
-        for(k=0; k<linha2; k++)
+        for(k=0; k<linha1; k++)
         {
           p1 = Busca(p1, i, k);  // verificando se existe algum dado preenchido nessa linha e nessa coluna
           p2 = Busca(p2, k, j); //  essa verificação acontece tanto pra matriz1 quanto pra matriz2
@@ -351,7 +351,8 @@ void main()
                     ImprimeMatriz(res, linha2, coluna2);
                     Libera(&res);
                   }
-                  printf("Nao e possivel somar essas matrizes!\n");
+                  else
+                    printf("Nao e possivel subtrair essas matrizes!\n");
                   break;
 
               case 3:
@@ -362,7 +363,7 @@ void main()
                   else{
                     printf("\nM1 * M2\n");
                     Multiplica(pem1, pem2, linha1, coluna1, linha2, coluna2, &res);
-                    ImprimeMatriz(res, linha2, coluna1);
+                    ImprimeMatriz(res, linha1, coluna2);
                     Libera(&res);
                   }
                   break;
@@ -376,10 +377,11 @@ void main()
                     ImprimeMatriz(res, coluna2, linha2);
                     Libera(&res);
                   }
-                  else
+                  else{
                     Transposta(pem1, linha1, coluna1, &res);
                     ImprimeMatriz(res, coluna1, linha1);
                     Libera(&res);
+                  }
                   break;
 
               case 5:
