@@ -3,8 +3,16 @@
 #include <time.h> // necessaria para fucao time
 #include <string.h>
 
+#define COLOR_RED     "\x1b[31m"
+#define COLOR_GREEN   "\x1b[32m"
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_BLUE    "\x1b[34m"
+#define COLOR_MAGENTA "\x1b[35m"
+#define COLOR_CYAN    "\x1b[36m"
+#define COLOR_RESET   "\x1b[0m"
+
 typedef struct airplane {
-  char voo[2], origem[3], destino[3], comp[3];
+  char voo[3], origem[5], destino[5], comp[5];
   int id;
 } aeronave;
 
@@ -65,11 +73,17 @@ void InsereNaLista(char *voo, char *origem, char *destino, char *comp, int id, c
   if(aux == 1){
     cabDecolagem *c = d;
     decolagem *novo = (decolagem*)malloc(sizeof(decolagem));
+    snprintf(novo->aviao.voo,sizeof(char[3]), "%s", voo);
+    snprintf(novo->aviao.origem, sizeof(char[4]), "%s", origem);
+    snprintf(novo->aviao.destino, sizeof(char[4]), "%s", destino);
+    snprintf(novo->aviao.comp, sizeof(char[4]), "%s", comp);
 
-    strcpy(novo->aviao.voo, voo);
+
+    /*strncpy(novo->aviao.voo, voo, sizeof(novo->aviao.voo));
     strcpy(novo->aviao.origem, origem);
     strcpy(novo->aviao.destino, destino);
     strcpy(novo->aviao.comp, comp);
+*/
     novo->aviao.id = id;
     novo->prox = NULL;
 
@@ -87,10 +101,10 @@ void InsereNaLista(char *voo, char *origem, char *destino, char *comp, int id, c
     cabPouso *c = p;
     pouso *novo = (pouso*)malloc(sizeof(pouso));
 
-    strcpy(novo->aviao.voo, voo);
-    strcpy(novo->aviao.origem, origem);
-    strcpy(novo->aviao.destino, destino);
-    strcpy(novo->aviao.comp, comp);
+    snprintf(novo->aviao.voo,sizeof(char[3]), "%s", voo);
+    snprintf(novo->aviao.origem, sizeof(char[4]), "%s", origem);
+    snprintf(novo->aviao.destino, sizeof(char[4]), "%s", destino);
+    snprintf(novo->aviao.comp, sizeof(char[4]), "%s", comp);
     novo->aviao.id = id;
     novo->prox = NULL;
 
@@ -158,22 +172,34 @@ void Listar(cabDecolagem *d, cabPouso *p, int x)
 {
   if(x == 1){
     decolagem *aux = d->ini;
-    printf("\n===FILA PARA DECOLAGEM===\n\n");
+    printf(COLOR_YELLOW "\n===FILA PARA DECOLAGEM===\n\n" COLOR_RESET);
     while(aux != NULL){
-      printf("Voo: %s, numero: %d, origem: %s, destino: %s, companhia: %s\n", aux->aviao.voo, aux->aviao.id, aux->aviao.origem, aux->aviao.destino, aux->aviao.comp);
+      printf("Voo: %s,", aux->aviao.voo);
+      printf("numero: %d,", aux->aviao.id);
+      printf("origem: %s,", aux->aviao.origem);
+      printf("destino: %s,", aux->aviao.destino);
+      printf("companhia: %s\n", aux->aviao.comp);
       aux = aux->prox;}
+    printf(COLOR_YELLOW "\n===FIM DA FILA PARA DECOLAGEM===\n\n" COLOR_RESET);
   }
   else{
     pouso *aux = p->ini;
-    printf("\n===FILA PARA POUSO===\n\n");
+    printf(COLOR_RED"\n===FILA PARA POUSO===\n\n"COLOR_RESET);
     while(aux != NULL){
-      printf("Voo: %s, numero: %d, origem: %s, destino: %s, companhia: %s\n", aux->aviao.voo, aux->aviao.id, aux->aviao.origem, aux->aviao.destino, aux->aviao.comp);
-      aux = aux->prox;}}
+      printf("Voo: %s,", aux->aviao.voo);
+      printf("numero: %d,", aux->aviao.id);
+      printf("origem: %s,", aux->aviao.origem);
+      printf("destino: %s,", aux->aviao.destino);
+      printf("companhia: %s\n", aux->aviao.comp);
+      aux = aux->prox;
+    }
+    printf(COLOR_RED"\n===FIM DA FILA PARA POUSO===\n\n"COLOR_RESET);
+  }
 }
 
 void ListaNumero(cabDecolagem *c, cabPouso *p, int aux)
 {
-  aux == 1 ? printf("\n===Existem %d voos na fila para decolagem===\n", c->total) : printf("\n===Existem %d voos na fila para pouso\n", p->total);
+  aux == 1 ? printf(COLOR_GREEN"\n===Existem %d voos na fila para decolagem===\n" COLOR_RESET, c->total) : printf("\n===Existem %d voos na fila para pouso\n", p->total);
 }
 
 void Autorizar(cabDecolagem *d, cabPouso *p, int x) // Essa funcao exibe caracteristicas de um aviao antes de remove-lo da fila
@@ -191,24 +217,28 @@ void Autorizar(cabDecolagem *d, cabPouso *p, int x) // Essa funcao exibe caracte
           d->ini = d->ini->prox;
           free(aux);
           (d->total)--;
-          printf("\n===Decolagem Autorizada===\n");}
+          printf(COLOR_GREEN"\n===Decolagem Autorizada===\n"COLOR_RESET);}
     }
     else
-        printf("\n===Fila para decolagem esta vazia===\n");
+        printf(COLOR_BLUE"\n===Fila para decolagem esta vazia===\n"COLOR_RESET);
   } else {
     if(p->total != 0){
         pouso *aux = p->ini;
-        printf("Voo: %s, numero: %d, origem: %s, destino: %s, companhia: %s\n", aux->aviao.voo, aux->aviao.id, aux->aviao.origem, aux->aviao.destino, aux->aviao.comp);
+        printf("Voo: %s,", aux->aviao.voo);
+        printf("numero: %d,", aux->aviao.id);
+        printf("origem: %s,", aux->aviao.origem);
+        printf("destino: %s,", aux->aviao.destino);
+        printf("companhia: %s\n", aux->aviao.comp);
         printf("Autorizar pouso? (S/N)\n");
         scanf(" %c", &opcao);
         if((opcao == 's') || (opcao == 'S')){
           p->ini = p->ini->prox;
           free(aux);
           (p->total)--;
-          printf("\n===Pouso Autorizado===\n");}
+          printf(COLOR_GREEN"\n===Pouso Autorizado===\n"COLOR_RESET);}
     }
     else
-      printf("\n===Fila para pouso esta vazia===\n");
+      printf(COLOR_BLUE"\n===Fila para pouso esta vazia===\n"COLOR_RESET);
   }
 }
 
@@ -217,11 +247,11 @@ void AddAviao(cabDecolagem *d, cabPouso *p, int x)
   char voo[2], ori[3], des[3], com[3], opcao, b;
   int id;
 
-  printf("Numero: \n"); scanf("%d", &id);
-  printf("Nome: "); scanf("%s", voo);
-  printf("Origem: "); scanf("%s", ori);
-  printf("Destino: "); scanf("%s", des);
-  printf("Companhia: "); scanf("%s", com);
+  printf("Numero: \n"); scanf("%d", &id);setbuf(stdin, NULL);
+  printf("Nome: "); scanf("%s", voo);setbuf(stdin, NULL);
+  printf("Origem: "); scanf("%s", ori);setbuf(stdin, NULL);
+  printf("Destino: "); scanf("%s", des);setbuf(stdin, NULL);
+  printf("Companhia: "); scanf("%s", com);setbuf(stdin, NULL);
   printf("\nVoo: %s, numero: %d, origem: %s, destino: %s, companhia: %s\n", voo, id, ori, des, com);
 
   if(x == 1){
