@@ -48,6 +48,107 @@ void Inicializa(cabDecolagem **d, cabPouso **p)
   (*p)->fim = NULL;
   (*p)->total = 0;
 }
+void Decola_animacao()
+{
+  int i, j;
+  system("clear");
+  printf(COLOR_GREEN"\n===Decolagem Autorizada===\n"COLOR_RESET);
+  printf("__________________________________________________________________________________________\n\n");
+  printf("------------------------------------------------------------------------------------------\n");
+  printf("__________________________________________________________________________________________\n");
+
+
+  printf("      _     ");
+  printf("\n");
+  printf("     //     ");
+  printf("\n");
+  printf(" ___//____/|");
+  printf("\n");
+  printf("(__________|");
+  printf("\n");
+  printf("    \\\\      ");
+  printf("\n");
+  printf("     \\\\     ");
+}
+
+void Pouso_animacao()
+{
+
+}
+
+void Listar_Decolagem(int quantos)
+{
+  int i;
+  printf(COLOR_RED" _|___|_\n"COLOR_RESET);
+  printf(COLOR_RED" \\"COLOR_RESET" CWB"COLOR_RED" /\n");
+  printf("  \\___/\n");
+  printf("   | |\n");
+  printf("   | |\n");
+  printf("   | |\n"COLOR_RESET);
+  printf("__________________________________________________________________________________________\n\n");
+  printf("------------------------------------------------------------------------------------------\n");
+  printf("__________________________________________________________________________________________\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("   __|__   ");
+  }
+  printf("\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("--o-(_)-o--");
+  }
+  printf("\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("  !  !  !  ");
+  }
+}
+
+void Listar_Pouso(int quantos)
+{
+  int i;
+
+  for (i = 0; i < quantos; i++)
+  {
+    printf("      _     ");
+  }
+  printf("\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("     //     ");
+  }
+  printf("\n");
+
+  for (i = 0; i < quantos; i++)
+  {
+    printf(" ___//____/|");
+  }
+  printf("\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("(__________|");
+  }
+  printf("\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("    \\\\      ");
+  }
+  printf("\n");
+  for (i = 0; i < quantos; i++)
+  {
+    printf("     \\\\     ");
+  }
+  printf(COLOR_RED"\n _|___|_\n"COLOR_RESET);
+  printf(COLOR_RED" \\"COLOR_RESET" CWB"COLOR_RED" /\n");
+  printf("  \\___/\n");
+  printf("   | |\n");
+  printf("   | |\n");
+  printf("   | |\n"COLOR_RESET);
+  printf("__________________________________________________________________________________________\n\n");
+  printf("------------------------------------------------------------------------------------------\n");
+  printf("__________________________________________________________________________________________\n");
+
+}
 
 int Aleatorio()
 {
@@ -59,7 +160,7 @@ int Aleatorio()
    * evitar possiveis repetições problemáticas
    */
 
-   int x = 1 + ( rand() % 10 );
+   int x = 1 + ( rand() % 5 );
 
    /* somando 1 evita-se a ocorrencia de um numero igual a zero. Lembrando que aqui
     * o numero gerado é de 1 a 10 (porque o mod eh 60)
@@ -170,6 +271,7 @@ void menu(int *opcao)
 
 void Listar(cabDecolagem *d, cabPouso *p, int x)
 {
+  int quantosAvioes=0;
   if(x == 1){
     decolagem *aux = d->ini;
     printf(COLOR_YELLOW "\n===FILA PARA DECOLAGEM===\n\n" COLOR_RESET);
@@ -179,8 +281,11 @@ void Listar(cabDecolagem *d, cabPouso *p, int x)
       printf("origem: %s,", aux->aviao.origem);
       printf("destino: %s,", aux->aviao.destino);
       printf("companhia: %s\n", aux->aviao.comp);
-      aux = aux->prox;}
+      aux = aux->prox;
+      quantosAvioes++;
+    }
     printf(COLOR_YELLOW "\n===FIM DA FILA PARA DECOLAGEM===\n\n" COLOR_RESET);
+    Listar_Decolagem(quantosAvioes);
   }
   else{
     pouso *aux = p->ini;
@@ -192,14 +297,16 @@ void Listar(cabDecolagem *d, cabPouso *p, int x)
       printf("destino: %s,", aux->aviao.destino);
       printf("companhia: %s\n", aux->aviao.comp);
       aux = aux->prox;
+      quantosAvioes++;
     }
     printf(COLOR_RED"\n===FIM DA FILA PARA POUSO===\n\n"COLOR_RESET);
+    Listar_Pouso(quantosAvioes);
   }
 }
 
 void ListaNumero(cabDecolagem *c, cabPouso *p, int aux)
 {
-  aux == 1 ? printf(COLOR_GREEN"\n===Existem %d voos na fila para decolagem===\n" COLOR_RESET, c->total) : printf("\n===Existem %d voos na fila para pouso\n", p->total);
+  aux == 1 ? printf(COLOR_GREEN"\n===Existem %d voos na fila para decolagem===\n" COLOR_RESET, c->total) : printf(COLOR_RED"\n===Existem %d voos na fila para pouso\n"COLOR_RESET, p->total);
 }
 
 void Autorizar(cabDecolagem *d, cabPouso *p, int x) // Essa funcao exibe caracteristicas de um aviao antes de remove-lo da fila
@@ -217,7 +324,10 @@ void Autorizar(cabDecolagem *d, cabPouso *p, int x) // Essa funcao exibe caracte
           d->ini = d->ini->prox;
           free(aux);
           (d->total)--;
-          printf(COLOR_GREEN"\n===Decolagem Autorizada===\n"COLOR_RESET);}
+          printf(COLOR_GREEN"\n===Decolagem Autorizada===\n"COLOR_RESET);
+          //Decola_animacao();
+        }
+
     }
     else
         printf(COLOR_BLUE"\n===Fila para decolagem esta vazia===\n"COLOR_RESET);
